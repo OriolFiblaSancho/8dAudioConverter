@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Audio Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated SVG Waves Background -->
+    <div class="waves-bg">
+        <svg class="wave wave1" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path id="wave1-path" fill="#00ffe7" fill-opacity="0.18"/>
+        </svg>
+        <svg class="wave wave2" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path id="wave2-path" fill="#ff00c8" fill-opacity="0.13"/>
+        </svg>
+    </div>
+    <div class="container">
+    <h1>3D Audio Converter</h1>
+    <p class="description">Upload an audio file and experience it with a spatial 3D effect.</p>
+        <input type="file" id="audioFile" accept="audio/*">
+    <button id="playBtn" disabled>Play 3D Audio</button>
+    <button id="downloadBtn" disabled>Download</button>
+    <audio id="audio" controls style="display:none;"></audio>
+    </div>
+    <script src="script.js"></script>
+    <script>
+    // Simple JS wave animation for background
+    function generateWavePath(amplitude, frequency, phase, height, offset) {
+        let path = `M0,${height}`;
+        for (let x = 0; x <= 1440; x += 20) {
+            let y = amplitude * Math.sin((x / 1440) * frequency * 2 * Math.PI + phase) + offset;
+            path += `L${x},${y}`;
+        }
+        path += `L1440,320L0,320Z`;
+        return path;
+    }
+    let t = 0;
+    function animateWaves() {
+        t += 0.016;
+        const wave1 = document.getElementById('wave1-path');
+        const wave2 = document.getElementById('wave2-path');
+        if (wave1) wave1.setAttribute('d', generateWavePath(30, 2, t, 160, 170 + 20 * Math.sin(t/2)));
+        if (wave2) wave2.setAttribute('d', generateWavePath(22, 3, t + 1, 200, 220 + 15 * Math.cos(t/3)));
+        requestAnimationFrame(animateWaves);
+    }
+    animateWaves();
+    </script>
+</body>
+</html>
